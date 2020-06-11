@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate
+Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="edu.pojo.DanhSachHoc" table="danhsachhoc">
+        <composite-id name="danhSachHocPK" class="edu.pojo.DanhSachHocPK">
+            <key-property name="maSinhVien" column="mssv" length="8"
+                          type="string" />
+            <key-property name="maMon" column="mamon"
+                          length="6" type="string" />
+        </composite-id>
+
+        <property name="diemGK" type="float" column="diemgk" />
+        <property name="diemCK" type="float" column="diemck" />
+        <property name="diemKhac" type="float" column="diemkhac" />
+        <property name="diemTong" type="float" column="diemtong" />
+
+        <many-to-one class="edu.pojo.SinhVien" name="sinhVien"
+                     fetch="join" lazy="false">
+            <column length="8" name="mssv" not-null="true"/>
+        </many-to-one>
+
+        <many-to-one class="edu.pojo.MonHoc" name="monHoc"
+                     fetch="join" lazy="false">
+            <column length="6" name="mamon" not-null="true"/>
+        </many-to-one>
+
+    </class>
+</hibernate-mapping>

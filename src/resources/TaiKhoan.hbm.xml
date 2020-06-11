@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate
+Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class catalog="quanlymonhoc"
+           name="edu.pojo.TaiKhoan" table="taikhoan">
+        <id name="tenDangNhap" type="string">
+            <column length="30" name="tendangnhap"/>
+            <generator class="assigned"/>
+        </id>
+        <property name="matKhau" type="string">
+            <column length="30" name="matkhau"/>
+        </property>
+        <property name="loaiTaiKhoan" type="boolean">
+            <column name="LOAITK "/>
+        </property>
+        <one-to-one name="sinhVien" class="edu.pojo.SinhVien"
+                    property-ref="taiKhoan"
+                    cascade="save-update,delete"/>
+    </class>
+</hibernate-mapping>

@@ -1,4 +1,7 @@
-package logic.main;
+package edu.pojo;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * project.edu.student.main
@@ -13,6 +16,18 @@ public class MonHoc {
     private String maMon;
     private String tenMon;
     private String phongHoc;
+
+    public Set<DanhSachHoc> getDanhSachHocSet() {
+        return danhSachHocSet;
+    }
+
+    public void setDanhSachHocSet(Set<DanhSachHoc> danhSachHocSet) {
+        this.danhSachHocSet = danhSachHocSet;
+    }
+
+    private Set<DanhSachHoc> danhSachHocSet = new HashSet<>(0);
+
+    public MonHoc() {}
 
     public MonHoc(String maMon, String tenMon, String phongHoc) {
         this.maMon = maMon;

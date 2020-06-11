@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate
+Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class catalog="quanlymonhoc"
+           name="edu.pojo.MonHoc" table="monhoc">
+        <id name="maMon" type="string">
+            <column length="6" name="mamon"/>
+            <generator class="assigned"/>
+        </id>
+        <property name="tenMon" type="string">
+            <column length="30" name="tenmon"/>
+        </property>
+        <property name="phongHoc" type="string">
+            <column length="3" name="phonghoc"/>
+        </property>
+
+        <set inverse="true" name="danhSachHocSet" fetch="join" lazy="false">
+            <key>
+                <column length="6" name="mamon" not-null="true"/>
+            </key>
+            <one-to-many class="edu.pojo.DanhSachHoc"/>
+        </set>
+    </class>
+</hibernate-mapping>

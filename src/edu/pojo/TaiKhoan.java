@@ -1,4 +1,4 @@
-package logic.main;
+package edu.pojo;
 
 /**
  * project.edu.student.main
@@ -13,15 +13,27 @@ public class TaiKhoan {
     private String tenDangNhap;
     private String matKhau;
     private Boolean loaiTaiKhoan;
+    private SinhVien sinhVien;
+
+    public TaiKhoan() {}
 
     public TaiKhoan(String tenDangNhap) {
         this.tenDangNhap = tenDangNhap;
     }
 
-    public TaiKhoan(String tenDangNhap, String matKhau, Boolean loaiTaiKhoan) {
+    public TaiKhoan(String tenDangNhap, String matKhau, Boolean loaiTaiKhoan, SinhVien sinhVien) {
         this.tenDangNhap = tenDangNhap;
         this.matKhau = matKhau;
         this.loaiTaiKhoan = loaiTaiKhoan;
+        this.sinhVien = sinhVien;
+    }
+
+    public SinhVien getSinhVien() {
+        return sinhVien;
+    }
+
+    public void setSinhVien(SinhVien sinhVien) {
+        this.sinhVien = sinhVien;
     }
 
     public String getTenDangNhap() {

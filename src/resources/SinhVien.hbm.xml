@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate
+Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class catalog="quanlymonhoc"
+           name="edu.pojo.SinhVien" table="sinhvien">
+        <id name="maSinhVien" type="string">
+            <column length="8" name="mssv"/>
+            <generator class="assigned"/>
+        </id>
+        <property name="hoTen" type="string">
+            <column length="30" name="hoten"/>
+        </property>
+        <property name="gioiTinh" type="string">
+            <column length="3" name="gioitinh"/>
+        </property>
+        <property name="chungMinhThu" type="integer">
+            <column name="cmnd"/>
+        </property>
+        <many-to-one class="edu.pojo.TaiKhoan"
+                     name="taiKhoan" fetch="join" lazy="false"
+                     cascade="save-update,delete">
+            <column length="30" name="tendangnhap" unique="true"/>
+        </many-to-one>
+
+        <set inverse="true" name="danhSachHocSet" fetch="join" lazy="false">
+            <key>
+                <column length="8" name="mssv" not-null="true"/>
+            </key>
+            <one-to-many class="edu.pojo.DanhSachHoc"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

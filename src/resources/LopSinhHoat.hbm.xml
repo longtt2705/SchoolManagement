@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate
+Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="edu.pojo.LopSinhHoat" table="lopsinhhoat">
+
+        <composite-id name="lopSinhHoatPK" class="edu.pojo.LopSinhHoatPK">
+            <key-property name="maSinhVien" column="mssv" length="8"
+                          type="string" />
+            <key-property name="maLop" column="malop"
+                          length="8" type="string" />
+        </composite-id>
+    </class>
+</hibernate-mapping>
