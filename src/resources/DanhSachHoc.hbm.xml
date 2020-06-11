@@ -4,12 +4,10 @@ Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <class name="edu.pojo.DanhSachHoc" table="danhsachhoc">
-        <composite-id name="danhSachHocPK" class="edu.pojo.DanhSachHocPK">
-            <key-property name="maSinhVien" column="mssv" length="8"
-                          type="string" />
-            <key-property name="maMon" column="mamon"
-                          length="6" type="string" />
-        </composite-id>
+        <id name="danhSachHocPK" type="integer">
+            <column name="dshid"/>
+            <generator class="assigned"/>
+        </id>
 
         <property name="diemGK" type="float" column="diemgk" />
         <property name="diemCK" type="float" column="diemck" />

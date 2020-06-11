@@ -13,58 +13,9 @@ import java.io.Serializable;
  * @Description
  **/
 
-@Embeddable
-class DanhSachHocPK implements Serializable {
-    protected String maSinhVien;
-    protected String maMon;
-
-    DanhSachHocPK() {}
-
-    public DanhSachHocPK(String maSinhVien, String maMon) {
-        this.maSinhVien = maSinhVien;
-        this.maMon = maMon;
-    }
-
-    public String getMaSinhVien() {
-        return maSinhVien;
-    }
-
-    public void setMaSinhVien(String maSinhVien) {
-        this.maSinhVien = maSinhVien;
-    }
-
-    public String getMaMon() {
-        return maMon;
-    }
-
-    public void setMaMon(String maMon) {
-        this.maMon = maMon;
-    }
-
-    @Override
-    public int hashCode() {
-        return (getMaSinhVien().hashCode() + " " + getMaMon()).hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        try {
-            LopSinhHoatPK other = (LopSinhHoatPK) obj;
-            if (this.getMaSinhVien().equals(other.getMaSinhVien()) && this.getMaMon().equals(other.getMaLop())) {
-                return true;
-            }
-        } catch (Exception e) {
-            return false;
-        }
-        return false;
-    }
-}
-
-@Entity
 public class DanhSachHoc implements Serializable {
 
-    @EmbeddedId
-    private DanhSachHocPK danhSachHocPK;
+    private Integer danhSachHocPK;
 
     private Float diemGK;
     private Float diemCK;
@@ -76,11 +27,11 @@ public class DanhSachHoc implements Serializable {
 
     public DanhSachHoc() {}
 
-    public DanhSachHoc(DanhSachHocPK danhSachHocPK) {
+    public DanhSachHoc(Integer danhSachHocPK) {
         this.danhSachHocPK = danhSachHocPK;
     }
 
-    public DanhSachHoc(DanhSachHocPK danhSachHocPK, Float diemGK, Float diemCK, Float diemKhac, Float diemTong, SinhVien sinhVien, MonHoc monHoc) {
+    public DanhSachHoc(Integer danhSachHocPK, Float diemGK, Float diemCK, Float diemKhac, Float diemTong, SinhVien sinhVien, MonHoc monHoc) {
         this.danhSachHocPK = danhSachHocPK;
         this.diemGK = diemGK;
         this.diemCK = diemCK;
@@ -90,11 +41,11 @@ public class DanhSachHoc implements Serializable {
         this.monHoc = monHoc;
     }
 
-    public DanhSachHocPK getDanhSachHocPK() {
+    public Integer getDanhSachHocPK() {
         return danhSachHocPK;
     }
 
-    public void setDanhSachHocPK(DanhSachHocPK danhSachHocPK) {
+    public void setDanhSachHocPK(Integer danhSachHocPK) {
         this.danhSachHocPK = danhSachHocPK;
     }
 
