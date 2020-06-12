@@ -27,7 +27,7 @@
         <!-- List of XML mapping files -->
         <mapping resource = "resources/SinhVien.hbm.xml"/>
         <mapping resource = "resources/DanhSachHoc.hbm.xml"/>
-        <mapping resource = "resources/Lop.hbm.xml"/>
+        <mapping resource = "resources/LopMonHoc.hbm.xml"/>
         <mapping resource = "resources/LopSinhHoat.hbm.xml"/>
         <mapping resource = "resources/MonHoc.hbm.xml"/>
         <mapping resource = "resources/TaiKhoan.hbm.xml"/>

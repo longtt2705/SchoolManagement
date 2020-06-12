@@ -1,48 +1,41 @@
 package edu.pojo;
 
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
- * project.edu.student.main
+ * logic.main
  *
  * @Created by Long - StudentID : 18120455
- * @Date 08/06/2020 - 8:33 PM
+ * @Date 10/06/2020 - 8:43 PM
  * @Description
  **/
+public class LopSinhHoat implements Serializable {
 
-public class LopSinhHoat {
-
-    private Integer lopSinhHoatPK;
-    private SinhVien sinhVien;
-    private Lop lop;
+    private String maLop;
+    private Set<LopMonHoc> lopMonHocSet = new HashSet<>(0);
 
     public LopSinhHoat() {}
 
-    public LopSinhHoat(Integer lopSinhHoatPK, SinhVien sinhVien, Lop lop) {
-        this.lopSinhHoatPK = lopSinhHoatPK;
-        this.sinhVien = sinhVien;
-        this.lop = lop;
+    public LopSinhHoat(String maLop) {
+        this.maLop = maLop;
     }
 
-    public Integer getLopSinhHoatPK() {
-        return lopSinhHoatPK;
+    public String getMaLop() {
+        return maLop;
     }
 
-    public void setLopSinhHoatPK(Integer lopSinhHoatPK) {
-        this.lopSinhHoatPK = lopSinhHoatPK;
+    public void setMaLop(String maLop) {
+        this.maLop = maLop;
     }
 
-    public SinhVien getSinhVien() {
-        return sinhVien;
+    public Set<LopMonHoc> getLopMonHocSet() {
+        return lopMonHocSet;
     }
 
-    public void setSinhVien(SinhVien sinhVien) {
-        this.sinhVien = sinhVien;
+    public void setLopMonHocSet(Set<LopMonHoc> lopMonHocSet) {
+        this.lopMonHocSet = lopMonHocSet;
     }
 
-    public Lop getLop() {
-        return lop;
-    }
-
-    public void setLop(Lop lop) {
-        this.lop = lop;
-    }
 }

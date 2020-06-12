@@ -20,6 +20,7 @@ public class SinhVienDao {
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             sinhVien = session.get(SinhVien.class, maSinhVien);
+
         } catch (HibernateException ex) {
             System.err.println(ex);
         }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate
+Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="edu.pojo.LopMonHoc" table="lopmonhoc">
+
+        <id name="lopMonHocPK" type="integer">
+            <column name="lmhid"/>
+            <generator class="assigned"/>
+        </id>
+
+        <many-to-one class="edu.pojo.LopSinhHoat" name="lopSinhHoat"
+                     fetch="join" lazy="false">
+            <column length="10" name="malop" not-null="true"/>
+        </many-to-one>
+
+        <many-to-one class="edu.pojo.MonHoc" name="monHoc"
+                     fetch="join" lazy="false">
+            <column length="6" name="mamon" not-null="true"/>
+        </many-to-one>
+
+        <set inverse="true" name="danhSachHocSet" fetch="join" lazy="false">
+            <key>
+                <column name="lmhid" not-null="true"/>
+            </key>
+            <one-to-many class="edu.pojo.DanhSachHoc"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

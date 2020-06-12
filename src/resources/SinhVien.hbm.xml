@@ -18,10 +18,17 @@ Mapping DTD 3.0//EN"
         <property name="chungMinhThu" type="integer">
             <column name="cmnd"/>
         </property>
+
         <many-to-one class="edu.pojo.TaiKhoan"
                      name="taiKhoan" fetch="join" lazy="false"
                      cascade="save-update,delete">
             <column length="30" name="tendangnhap" unique="true"/>
+        </many-to-one>
+
+        <many-to-one class="edu.pojo.LopSinhHoat"
+                     name="lopSinhHoat" fetch="join" lazy="false"
+                     cascade="save-update,delete">
+            <column length="10" name="malop" not-null="true"/>
         </many-to-one>
 
         <set inverse="true" name="danhSachHocSet" fetch="join" lazy="false">

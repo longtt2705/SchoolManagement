@@ -20,6 +20,7 @@ public class SinhVien implements Serializable {
     private Integer chungMinhThu;
     private TaiKhoan taiKhoan;
     private Set<DanhSachHoc> danhSachHocSet = new HashSet<>(0);
+    private LopSinhHoat lopSinhHoat;
 
     public SinhVien() {}
 
@@ -27,12 +28,13 @@ public class SinhVien implements Serializable {
         this.maSinhVien = maSinhVien;
     }
 
-    public SinhVien(String maSinhVien, String hoTen, String gioiTinh, Integer chungMinhThu, TaiKhoan taiKhoan) {
+    public SinhVien(String maSinhVien, String hoTen, String gioiTinh, Integer chungMinhThu, TaiKhoan taiKhoan, Set<DanhSachHoc> danhSachHocSet) {
         this.maSinhVien = maSinhVien;
         this.hoTen = hoTen;
         this.gioiTinh = gioiTinh;
         this.chungMinhThu = chungMinhThu;
         this.taiKhoan = taiKhoan;
+        this.danhSachHocSet = danhSachHocSet;
     }
 
     public String getMaSinhVien() {
@@ -81,5 +83,13 @@ public class SinhVien implements Serializable {
 
     public void setDanhSachHocSet(Set<DanhSachHoc> danhSachHocSet) {
         this.danhSachHocSet = danhSachHocSet;
+    }
+
+    public LopSinhHoat getLopSinhHoat() {
+        return lopSinhHoat;
+    }
+
+    public void setLopSinhHoat(LopSinhHoat lopSinhHoat) {
+        this.lopSinhHoat = lopSinhHoat;
     }
 }

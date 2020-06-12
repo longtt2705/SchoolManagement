@@ -16,11 +16,11 @@ Mapping DTD 3.0//EN"
             <column length="3" name="phonghoc"/>
         </property>
 
-        <set inverse="true" name="danhSachHocSet" fetch="join" lazy="false">
+        <set inverse="true" name="lopMonHocSet" fetch="join" lazy="false">
             <key>
-                <column length="6" name="mamon" not-null="true"/>
+                <column length="10" name="mamon" not-null="true"/>
             </key>
-            <one-to-many class="edu.pojo.DanhSachHoc"/>
+            <one-to-many class="edu.pojo.LopMonHoc"/>
         </set>
     </class>
 </hibernate-mapping>

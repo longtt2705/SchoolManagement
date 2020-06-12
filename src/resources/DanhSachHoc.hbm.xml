@@ -19,9 +19,9 @@ Mapping DTD 3.0//EN"
             <column length="8" name="mssv" not-null="true"/>
         </many-to-one>
 
-        <many-to-one class="edu.pojo.MonHoc" name="monHoc"
+        <many-to-one class="edu.pojo.LopMonHoc" name="lopMonHoc"
                      fetch="join" lazy="false">
-            <column length="6" name="mamon" not-null="true"/>
+            <column name="lmhid" not-null="true"/>
         </many-to-one>
 
     </class>

@@ -23,7 +23,7 @@ public class DanhSachHoc implements Serializable {
     private Float diemTong;
 
     private SinhVien sinhVien;
-    private MonHoc monHoc;
+    private LopMonHoc lopMonHoc;
 
     public DanhSachHoc() {}
 
@@ -31,14 +31,12 @@ public class DanhSachHoc implements Serializable {
         this.danhSachHocPK = danhSachHocPK;
     }
 
-    public DanhSachHoc(Integer danhSachHocPK, Float diemGK, Float diemCK, Float diemKhac, Float diemTong, SinhVien sinhVien, MonHoc monHoc) {
+    public DanhSachHoc(Integer danhSachHocPK, Float diemGK, Float diemCK, Float diemKhac, Float diemTong) {
         this.danhSachHocPK = danhSachHocPK;
         this.diemGK = diemGK;
         this.diemCK = diemCK;
         this.diemKhac = diemKhac;
         this.diemTong = diemTong;
-        this.sinhVien = sinhVien;
-        this.monHoc = monHoc;
     }
 
     public Integer getDanhSachHocPK() {
@@ -89,11 +87,11 @@ public class DanhSachHoc implements Serializable {
         this.sinhVien = sinhVien;
     }
 
-    public MonHoc getMonHoc() {
-        return monHoc;
+    public LopMonHoc getLopMonHoc() {
+        return lopMonHoc;
     }
 
-    public void setMonHoc(MonHoc monHoc) {
-        this.monHoc = monHoc;
+    public void setLopMonHoc(LopMonHoc lopMonHoc) {
+        this.lopMonHoc = lopMonHoc;
     }
 }

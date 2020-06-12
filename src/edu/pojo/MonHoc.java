@@ -1,5 +1,6 @@
 package edu.pojo;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,32 +12,23 @@ import java.util.Set;
  * @Description
  **/
 
-public class MonHoc {
+public class MonHoc implements Serializable {
 
     private String maMon;
     private String tenMon;
     private String phongHoc;
-
-    public Set<DanhSachHoc> getDanhSachHocSet() {
-        return danhSachHocSet;
-    }
-
-    public void setDanhSachHocSet(Set<DanhSachHoc> danhSachHocSet) {
-        this.danhSachHocSet = danhSachHocSet;
-    }
-
-    private Set<DanhSachHoc> danhSachHocSet = new HashSet<>(0);
+    private Set<LopMonHoc> lopMonHocSet = new HashSet<>(0);
 
     public MonHoc() {}
+
+    public MonHoc(String maMon) {
+        this.maMon = maMon;
+    }
 
     public MonHoc(String maMon, String tenMon, String phongHoc) {
         this.maMon = maMon;
         this.tenMon = tenMon;
         this.phongHoc = phongHoc;
-    }
-
-    public MonHoc(String maMon) {
-        this.maMon = maMon;
     }
 
     public String getMaMon() {
@@ -61,5 +53,13 @@ public class MonHoc {
 
     public void setPhongHoc(String phongHoc) {
         this.phongHoc = phongHoc;
+    }
+
+    public Set<LopMonHoc> getLopMonHocSet() {
+        return lopMonHocSet;
+    }
+
+    public void setLopMonHocSet(Set<LopMonHoc> lopMonHocSet) {
+        this.lopMonHocSet = lopMonHocSet;
     }
 }
