@@ -1,11 +1,8 @@
 package edu.main;
 
 import edu.dao.SinhVienDao;
-import edu.pojo.DanhSachHoc;
-import edu.pojo.LopMonHoc;
+import edu.main.GUI.TeacherGUI;
 import edu.pojo.SinhVien;
-
-import java.util.Set;
 
 /**
  * logic.main
@@ -23,9 +20,12 @@ public class MainProgram {
         if (sv == null) {
             System.out.println("LOL");
         } else {
-
-
             System.out.println(sv.getLopSinhHoat().getLopMonHocSet());
         }
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                TeacherGUI.createAndShowGUI();
+            }
+        });
     }
 }
