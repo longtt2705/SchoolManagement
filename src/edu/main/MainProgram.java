@@ -4,6 +4,8 @@ import edu.dao.SinhVienDao;
 import edu.main.GUI.TeacherGUI;
 import edu.pojo.SinhVien;
 
+import java.util.List;
+
 /**
  * logic.main
  *
@@ -15,13 +17,6 @@ public class MainProgram {
 
     public static void main(String[] args) {
 
-        SinhVien sv = SinhVienDao.layThongTinhSinhVien("1742001");
-
-        if (sv == null) {
-            System.out.println("LOL");
-        } else {
-            System.out.println(sv.getLopSinhHoat().getLopMonHocSet());
-        }
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 TeacherGUI.createAndShowGUI();

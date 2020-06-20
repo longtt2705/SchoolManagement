@@ -1,5 +1,7 @@
 package edu.pojo;
 
+import javax.swing.text.StyledEditorKit;
+
 /**
  * project.edu.student.main
  *
@@ -12,13 +14,15 @@ public class TaiKhoan {
 
     private String tenDangNhap;
     private String matKhau;
-    private Boolean loaiTaiKhoan;
+    private Boolean loaiTaiKhoan; // true = sinh vien, false = giao vu
     private SinhVien sinhVien;
 
     public TaiKhoan() {}
 
-    public TaiKhoan(String tenDangNhap) {
+    public TaiKhoan(String tenDangNhap, Boolean loaiTaiKhoan) {
         this.tenDangNhap = tenDangNhap;
+        this.matKhau = tenDangNhap;
+        this.loaiTaiKhoan = loaiTaiKhoan;
     }
 
     public TaiKhoan(String tenDangNhap, String matKhau, Boolean loaiTaiKhoan, SinhVien sinhVien) {

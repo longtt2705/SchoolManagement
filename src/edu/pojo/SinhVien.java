@@ -2,6 +2,7 @@ package edu.pojo;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -91,5 +92,31 @@ public class SinhVien implements Serializable {
 
     public void setLopSinhHoat(LopSinhHoat lopSinhHoat) {
         this.lopSinhHoat = lopSinhHoat;
+    }
+
+    public Object[] toArray(int index) {
+
+        Object[] array = new Object[5];
+
+        array[0] = String.valueOf(index);
+        array[1] = maSinhVien;
+        array[2] = hoTen;
+        array[3] = gioiTinh;
+        array[4] = chungMinhThu;
+
+        return array;
+    }
+
+    public static SinhVien ParseStringToStudent(String line) {
+
+        SinhVien sinhVien = new SinhVien();
+        String[] lineSplit = line.split(",");
+
+        sinhVien.setMaSinhVien(lineSplit[1]);
+        sinhVien.setHoTen(lineSplit[2]);
+        sinhVien.setGioiTinh(lineSplit[3]);
+        sinhVien.setChungMinhThu(Integer.parseInt(lineSplit[4]));
+
+        return sinhVien;
     }
 }

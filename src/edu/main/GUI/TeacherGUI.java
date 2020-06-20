@@ -5,7 +5,6 @@ import edu.pojo.LopSinhHoat;
 
 import javax.swing.*;
 import java.awt.*;
-import java.lang.ref.PhantomReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,10 +19,15 @@ import java.util.Objects;
  **/
 public class TeacherGUI {
 
-    private static final int SPACE_SIZE = 5;
-    private static final int TAB_SIZE = 4 * SPACE_SIZE;
-    private static final int PANEL_HEIGHT = 100;
-    private static final int PANEL_WIDTH = 450;
+    public static final int SPACE_SIZE = 5;
+    public static final int TAB_SIZE = 4 * SPACE_SIZE;
+    public static final int PANEL_HEIGHT = 100;
+    public static final int PANEL_WIDTH = 450;
+
+    private static JPanel container;
+    private static JFrame frame;
+
+    public static JScrollPane table = null;
 
     /**
      * Create the GUI and show it.  For thread safety,
@@ -34,13 +38,13 @@ public class TeacherGUI {
 
         // Create and set up a frame window
         JFrame.setDefaultLookAndFeelDecorated(true);
-        JFrame frame = new JFrame("Quản Lý Lớp Học");
+        frame = new JFrame("Quản Lý Lớp Học");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Set the window to be visible as the default to be false
         frame.setVisible(true);
 
         // Create Panel
-        JPanel container = new JPanel();
+        container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 
         // Set up the title for panels
@@ -60,8 +64,6 @@ public class TeacherGUI {
 
         // Set window fits components
         frame.pack();
-
-
     }
 
     private static JPanel createBaseClassPanel() {
@@ -96,6 +98,8 @@ public class TeacherGUI {
 
         // Add Listener
         addClassButton.addActionListener(new AddBaseClassListener(getClassStringArray(), classList));
+        addStudentListButton.addActionListener(new AddStudentListListener(classList));
+        showStudentListButton.addActionListener(new ShowStudentListListener(frame, container, classList, null));
 
         // label constraint
         springLayout.putConstraint(SpringLayout.WEST, baseClassLabel, SPACE_SIZE, SpringLayout.WEST, panel);
@@ -181,12 +185,6 @@ public class TeacherGUI {
         springLayout.putConstraint(SpringLayout.NORTH, showScheduleButton, SPACE_SIZE, SpringLayout.SOUTH, addStudentListButton);
 
         return panel;
-    }
-
-    private static JTable createStudentTable() {
-
-
-        return null;
     }
 
     public static String[] getClassStringArray() {
