@@ -31,6 +31,11 @@ public class DanhSachHoc implements Serializable {
         this.danhSachHocPK = danhSachHocPK;
     }
 
+    public DanhSachHoc(SinhVien sinhVien, LopMonHoc lopMonHoc) {
+        this.sinhVien = sinhVien;
+        this.lopMonHoc = lopMonHoc;
+    }
+
     public DanhSachHoc(Integer danhSachHocPK, Float diemGK, Float diemCK, Float diemKhac, Float diemTong) {
         this.danhSachHocPK = danhSachHocPK;
         this.diemGK = diemGK;

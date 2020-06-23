@@ -1,12 +1,12 @@
 package edu.dao;
 
 import edu.pojo.LopSinhHoat;
-import edu.pojo.SinhVien;
 import edu.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import javax.swing.*;
 import java.util.List;
 
 /**
@@ -28,6 +28,8 @@ public class LopSinhHoatDao {
             return query.list();
 
         } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(new JFrame(),"Có lỗi khi cập nhật bảng lớp sinh hoạt",
+                    "Unexpected error", JOptionPane.ERROR_MESSAGE);
             System.err.println(ex);
         }
 
@@ -46,6 +48,8 @@ public class LopSinhHoatDao {
             session.getTransaction().commit();
 
         } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(new JFrame(),"Có lỗi khi cập nhật bảng lớp sinh hoạt",
+                    "Unexpected error", JOptionPane.ERROR_MESSAGE);
             System.err.println(ex);
         }
     }

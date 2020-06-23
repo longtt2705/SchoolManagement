@@ -26,6 +26,11 @@ public class LopMonHoc implements Serializable {
         this.lopMonHocPK = lopMonHocPK;
     }
 
+    public LopMonHoc(LopSinhHoat lopSinhHoat, MonHoc monHoc) {
+        this.lopSinhHoat = lopSinhHoat;
+        this.monHoc = monHoc;
+    }
+
     public LopMonHoc(Integer lopMonHocPK, LopSinhHoat lopSinhHoat, MonHoc monHoc) {
         this.lopMonHocPK = lopMonHocPK;
         this.lopSinhHoat = lopSinhHoat;

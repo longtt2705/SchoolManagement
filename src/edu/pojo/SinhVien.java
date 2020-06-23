@@ -1,5 +1,9 @@
 package edu.pojo;
 
+import edu.main.GUI.TeacherGUI;
+
+import javax.swing.*;
+import java.awt.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
@@ -27,6 +31,14 @@ public class SinhVien implements Serializable {
 
     public SinhVien(String maSinhVien) {
         this.maSinhVien = maSinhVien;
+    }
+
+    public SinhVien(String maSinhVien, String hoTen, String gioiTinh, Integer chungMinhThu, LopSinhHoat lopSinhHoat) {
+        this.maSinhVien = maSinhVien;
+        this.hoTen = hoTen;
+        this.gioiTinh = gioiTinh;
+        this.chungMinhThu = chungMinhThu;
+        this.lopSinhHoat = lopSinhHoat;
     }
 
     public SinhVien(String maSinhVien, String hoTen, String gioiTinh, Integer chungMinhThu, TaiKhoan taiKhoan, Set<DanhSachHoc> danhSachHocSet) {

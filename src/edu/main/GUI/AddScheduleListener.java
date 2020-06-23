@@ -1,8 +1,10 @@
 package edu.main.GUI;
 
+import edu.dao.DanhSachHocDao;
+import edu.dao.LopMonHocDao;
+import edu.dao.MonHocDao;
 import edu.dao.SinhVienDao;
-import edu.pojo.LopSinhHoat;
-import edu.pojo.SinhVien;
+import edu.pojo.*;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -54,15 +56,30 @@ public class AddScheduleListener implements ActionListener {
         if (r == JFileChooser.APPROVE_OPTION) {
 
             try {
-
+                String maLop = (String) classList.getSelectedItem();
                 List<String> scheduleList = readCsvFile(j.getSelectedFile().getAbsolutePath());
                 scheduleList.forEach(line -> {
 
-                    SinhVien sinhVien = SinhVien.ParseStringToStudent(line);
-                    sinhVien.setLopSinhHoat(new LopSinhHoat((String) classList.getSelectedItem())); // Add current base class
+                    MonHoc monHoc = MonHoc.ParseStringToSubject(line);
+                    LopMonHoc lopMonHoc = new LopMonHoc(
+                            new LopSinhHoat(maLop), monHoc);
 
-                    // Add student
-                    SinhVienDao.themSinhVien(sinhVien);
+                    // Add subject
+                    MonHocDao.themMonHoc(monHoc);
+                    LopMonHocDao.themLopMonHoc(lopMonHoc);
+
+                    lopMonHoc = LopMonHocDao.layLopMonHoc(lopMonHoc);
+
+                    List<SinhVien> studentList = SinhVienDao.layDanhSachSinhVien(
+                            maLop, null);
+
+                    LopMonHoc finalLopMonHoc = lopMonHoc;
+                    if (studentList != null) {
+                        studentList.forEach(student -> {
+
+                            DanhSachHocDao.themDanhSachHoc(new DanhSachHoc(student, finalLopMonHoc));
+                        });
+                    }
                 });
 
                 JOptionPane.showMessageDialog(new JFrame(),"Thêm danh sách thành công");

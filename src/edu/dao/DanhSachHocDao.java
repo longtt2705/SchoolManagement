@@ -1,10 +1,13 @@
 package edu.dao;
 
+import edu.pojo.DanhSachHoc;
+import edu.pojo.LopMonHoc;
 import edu.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import javax.swing.*;
 import java.util.List;
 
 /**
@@ -16,7 +19,7 @@ import java.util.List;
  **/
 public class DanhSachHocDao {
 
-    public static List layDanhSachHoc() {
+    public static List layToanBoDanhSachHoc() {
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
@@ -30,5 +33,53 @@ public class DanhSachHocDao {
         }
 
         return null;
+    }
+
+    public static LopMonHoc layDanhSachHoc(DanhSachHoc danhSachHoc) {
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "from DanhSachHoc dsh where dsh.sinhVien.maSinhVien = " +
+                    ":maSinhVien and dsh.lopMonHoc.lopMonHocPK = :lopMonHocPK";
+
+            Query query = session.createQuery(hql);
+            query.setParameter("maSinhVien", danhSachHoc.getSinhVien().getMaSinhVien());
+            query.setParameter("lopMonHocPK", danhSachHoc.getLopMonHoc().getLopMonHocPK());
+
+            List<LopMonHoc> list = query.list();
+            if (list.size() == 0)
+                return null;
+
+            return list.get(0);
+
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(new JFrame(),"Có lỗi khi lấy thông tin Sinh Viên",
+                    "Unexpected error", JOptionPane.ERROR_MESSAGE);
+            System.err.println(ex);
+        }
+
+        return null;
+    }
+
+    public static void themDanhSachHoc(DanhSachHoc danhSachHoc) {
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
+            session.beginTransaction();
+
+            if (layDanhSachHoc(danhSachHoc) != null) {
+                JOptionPane.showMessageDialog(new JFrame(),"Học sinh này đã học lớp này rồi",
+                        "Duplicate value error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            session.save(danhSachHoc);
+            session.getTransaction().commit();
+
+
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(new JFrame(),"Có lỗi khi đăng ký môn học",
+                    "Unexpected error", JOptionPane.ERROR_MESSAGE);
+            System.err.println(ex);
+        }
     }
 }

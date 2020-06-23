@@ -28,7 +28,7 @@ Mapping DTD 3.0//EN"
         <many-to-one class="edu.pojo.LopSinhHoat"
                      name="lopSinhHoat" fetch="join" lazy="false"
                      cascade="save-update,delete">
-            <column length="10" name="malop" not-null="true"/>
+            <column length="10" name="malop"/>
         </many-to-one>
 
         <set inverse="true" name="danhSachHocSet" fetch="join" lazy="false">

@@ -62,4 +62,28 @@ public class MonHoc implements Serializable {
     public void setLopMonHocSet(Set<LopMonHoc> lopMonHocSet) {
         this.lopMonHocSet = lopMonHocSet;
     }
+
+    public static MonHoc ParseStringToSubject(String line) {
+
+        MonHoc monHoc = new MonHoc();
+        String[] lineSplit = line.split(",");
+
+        monHoc.setMaMon(lineSplit[1]);
+        monHoc.setTenMon(lineSplit[2]);
+        monHoc.setPhongHoc(lineSplit[3]);
+
+        return monHoc;
+    }
+
+    public Object[] toArray(int index) {
+
+        Object[] array = new Object[4];
+
+        array[0] = String.valueOf(index);
+        array[1] = maMon;
+        array[2] = tenMon;
+        array[3] = phongHoc;
+
+        return array;
+    }
 }

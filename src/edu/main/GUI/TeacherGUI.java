@@ -1,10 +1,15 @@
 package edu.main.GUI;
 
+import edu.dao.LopMonHocDao;
 import edu.dao.LopSinhHoatDao;
+import edu.pojo.LopMonHoc;
 import edu.pojo.LopSinhHoat;
+import edu.pojo.MonHoc;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,8 +31,11 @@ public class TeacherGUI {
 
     private static JPanel container;
     private static JFrame frame;
+    private static JComboBox<String> baseClass;
+    private static JComboBox<String> subjectClass;
 
     public static JScrollPane table = null;
+    public static JPanel infoPanel = null;
 
     /**
      * Create the GUI and show it.  For thread safety,
@@ -54,8 +62,14 @@ public class TeacherGUI {
         // Components
         // Buttons
         JButton logoutButton = new JButton("Đăng xuất");
-        logoutButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        container.add(logoutButton);
+        JButton changePassButton = new JButton("Đổi mật khẩu");
+
+        // Navigate Bar
+        JPanel navigatePanel = new JPanel();
+        navigatePanel.setLayout(new BoxLayout(navigatePanel, BoxLayout.X_AXIS));
+        navigatePanel.add(logoutButton);
+        navigatePanel.add(changePassButton);
+        container.add(navigatePanel);
 
         JPanel baseClassPanel = createBaseClassPanel();
         JPanel subjectClassPanel = createSubjectClassPanel();
@@ -76,7 +90,7 @@ public class TeacherGUI {
 
         // Button
         JButton addClassButton = new JButton("+");
-        JButton addStudentListButton = new JButton("Thêm danh sách lớp");
+        JButton addStudentListButton = new JButton("Thêm sinh viên");
         JButton addScheduleButton = new JButton("Thêm thời khóa biểu");
         JButton showStudentListButton = new JButton("Xem danh sách lớp");
         JButton showScheduleButton = new JButton("Xem thời khóa biểu");
@@ -87,19 +101,30 @@ public class TeacherGUI {
         panel.add(addScheduleButton);
         panel.add(showStudentListButton);
         panel.add(showScheduleButton);
-        System.out.println(addStudentListButton.getSize());
+
         // Label
         JLabel baseClassLabel = new JLabel("Lớp sinh hoạt: ");
         panel.add(baseClassLabel);
 
         // ComboBox
         JComboBox<String> classList = new JComboBox<>(Objects.requireNonNull(getClassStringArray()));
+        baseClass = classList;
+        baseClass.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String maLop = (String) classList.getSelectedItem();//get the selected item
+                if (subjectClass != null)
+                    updateSubjectClassComboBox(maLop, subjectClass);
+            }
+        });
         panel.add(classList);
 
         // Add Listener
         addClassButton.addActionListener(new AddBaseClassListener(getClassStringArray(), classList));
-        addStudentListButton.addActionListener(new AddStudentListListener(classList));
+        addStudentListButton.addActionListener(new AddStudentListener(classList));
         showStudentListButton.addActionListener(new ShowStudentListListener(frame, container, classList, null));
+        addScheduleButton.addActionListener(new AddScheduleListener(classList));
+        showScheduleButton.addActionListener(new ShowScheduleListener(container, frame, classList));
 
         // label constraint
         springLayout.putConstraint(SpringLayout.WEST, baseClassLabel, SPACE_SIZE, SpringLayout.WEST, panel);
@@ -141,48 +166,53 @@ public class TeacherGUI {
         panel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 
         // Button
-        JButton addStudentListButton = new JButton("Thêm sinh viên");
-        JButton addScheduleButton = new JButton("Xem danh sách lớp");
-        JButton showStudentListButton = new JButton("Xóa sinh viên");
-        JButton showScheduleButton = new JButton("Thêm bảng điểm");
+        JButton addStudentButton = new JButton("Thêm sinh viên");
+        JButton showStudentListButton = new JButton("Xem danh sách lớp");
+        JButton deleteStudentButton = new JButton("Xóa sinh viên");
+        JButton addTranscriptButton = new JButton("Thêm bảng điểm");
 
         // add buttons to panel
-        panel.add(addStudentListButton);
-        panel.add(addScheduleButton);
+        panel.add(addStudentButton);
         panel.add(showStudentListButton);
-        panel.add(showScheduleButton);
+        panel.add(deleteStudentButton);
+        panel.add(addTranscriptButton);
 
         // Label
         JLabel baseClassLabel = new JLabel("Các môn học: ");
         panel.add(baseClassLabel);
 
         // ComboBox
-        JComboBox<String> classList = new JComboBox<>(Objects.requireNonNull(getClassStringArray()));
-        panel.add(classList);
+        List<String> data = LopMonHocDao.layDanhSachMaMonHoc((String) baseClass.getSelectedItem());
+        JComboBox<String> subClassList = new JComboBox<>(data.toArray(new String[0]));
+        subjectClass = subClassList;
+        panel.add(subClassList);
+
+        // Add Listener
+        showStudentListButton.addActionListener(new ShowStudentListListener(frame, container, baseClass, subjectClass));
 
         // label constraint
         springLayout.putConstraint(SpringLayout.WEST, baseClassLabel, SPACE_SIZE, SpringLayout.WEST, panel);
         springLayout.putConstraint(SpringLayout.NORTH, baseClassLabel, SPACE_SIZE, SpringLayout.NORTH, panel);
 
         // comboBox constraint
-        springLayout.putConstraint(SpringLayout.WEST, classList, 2 * SPACE_SIZE, SpringLayout.WEST, panel);
-        springLayout.putConstraint(SpringLayout.NORTH, classList, SPACE_SIZE, SpringLayout.SOUTH, baseClassLabel);
+        springLayout.putConstraint(SpringLayout.WEST, subClassList, 2 * SPACE_SIZE, SpringLayout.WEST, panel);
+        springLayout.putConstraint(SpringLayout.NORTH, subClassList, SPACE_SIZE, SpringLayout.SOUTH, baseClassLabel);
 
         // addStudentListButton constraint
-        springLayout.putConstraint(SpringLayout.WEST, addStudentListButton, SPACE_SIZE, SpringLayout.EAST, classList);
-        springLayout.putConstraint(SpringLayout.NORTH, addStudentListButton, 0, SpringLayout.NORTH, classList);
+        springLayout.putConstraint(SpringLayout.WEST, addStudentButton, SPACE_SIZE, SpringLayout.EAST, subClassList);
+        springLayout.putConstraint(SpringLayout.NORTH, addStudentButton, 0, SpringLayout.NORTH, subClassList);
 
         // showStudentListButton constraint
-        springLayout.putConstraint(SpringLayout.WEST, showStudentListButton, SPACE_SIZE, SpringLayout.EAST, addStudentListButton);
-        springLayout.putConstraint(SpringLayout.NORTH, showStudentListButton, 0, SpringLayout.NORTH, classList);
+        springLayout.putConstraint(SpringLayout.WEST, deleteStudentButton, SPACE_SIZE, SpringLayout.EAST, addStudentButton);
+        springLayout.putConstraint(SpringLayout.NORTH, deleteStudentButton, 0, SpringLayout.NORTH, subClassList);
 
         // addScheduleButton constraint
-        springLayout.putConstraint(SpringLayout.WEST, addScheduleButton, SPACE_SIZE, SpringLayout.EAST, classList);
-        springLayout.putConstraint(SpringLayout.NORTH, addScheduleButton, SPACE_SIZE, SpringLayout.SOUTH, addStudentListButton);
+        springLayout.putConstraint(SpringLayout.WEST, showStudentListButton, SPACE_SIZE, SpringLayout.EAST, subClassList);
+        springLayout.putConstraint(SpringLayout.NORTH, showStudentListButton, SPACE_SIZE, SpringLayout.SOUTH, addStudentButton);
 
         // showScheduleButton constraint
-        springLayout.putConstraint(SpringLayout.WEST, showScheduleButton, SPACE_SIZE, SpringLayout.EAST, addScheduleButton);
-        springLayout.putConstraint(SpringLayout.NORTH, showScheduleButton, SPACE_SIZE, SpringLayout.SOUTH, addStudentListButton);
+        springLayout.putConstraint(SpringLayout.WEST, addTranscriptButton, SPACE_SIZE, SpringLayout.EAST, showStudentListButton);
+        springLayout.putConstraint(SpringLayout.NORTH, addTranscriptButton, SPACE_SIZE, SpringLayout.SOUTH, addStudentButton);
 
         return panel;
     }
@@ -212,5 +242,14 @@ public class TeacherGUI {
         List<String> baseClassNames = Arrays.asList(Objects.requireNonNull(getClassStringArray()));
 
         baseClassNames.forEach(baseClassesComboBox::addItem);
+    }
+
+    public static void updateSubjectClassComboBox(String maLop, JComboBox<String> subjectClassesComboBox) {
+
+        subjectClassesComboBox.removeAllItems();
+
+        List<String> baseClassNames = LopMonHocDao.layDanhSachMaMonHoc(maLop);
+        if (baseClassNames != null)
+            baseClassNames.forEach(subjectClassesComboBox::addItem);
     }
 }

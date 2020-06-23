@@ -7,7 +7,7 @@ Mapping DTD 3.0//EN"
 
         <id name="lopMonHocPK" type="integer">
             <column name="lmhid"/>
-            <generator class="assigned"/>
+            <generator class="identity"/>
         </id>
 
         <many-to-one class="edu.pojo.LopSinhHoat" name="lopSinhHoat"

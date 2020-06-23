@@ -6,6 +6,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import javax.swing.*;
 import java.util.List;
 
 /**
@@ -27,6 +28,8 @@ public class TaiKhoanDao {
             return query.list();
 
         } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(new JFrame(),"Có lỗi khi cập nhật bảng Tài khoản",
+                    "Unexpected error", JOptionPane.ERROR_MESSAGE);
             System.err.println(ex);
         }
 
@@ -42,6 +45,8 @@ public class TaiKhoanDao {
             session.getTransaction().commit();
 
         } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(new JFrame(),"Có lỗi khi cập nhật bảng Sinh Viên",
+                    "Unexpected error", JOptionPane.ERROR_MESSAGE);
             System.err.println(ex);
         }
     }

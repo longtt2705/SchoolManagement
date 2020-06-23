@@ -25,19 +25,43 @@ import java.util.List;
  * @Date 17/06/2020 - 6:40 PM
  * @Description
  **/
-public class AddStudentListListener implements ActionListener {
+public class AddStudentListener implements ActionListener {
 
     JComboBox<String> classList;
 
-    public AddStudentListListener(JComboBox<String> classList) {
+    public AddStudentListener(JComboBox<String> classList) {
         this.classList = classList;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        int confirmDialog = JOptionPane.showConfirmDialog(null,
-                "Toàn bộ dữ liệu cũ sẽ bị ghi đè, bạn có muốn tiếp tục?");
+        Object[] options = {"Thêm danh sách",
+                "Thêm một sinh viên",
+                "Cancel"};
+
+        int optionDialog = JOptionPane.showOptionDialog(new JFrame(), "Lựa chọn cách thêm sinh viên",
+                "Thêm sinh viên", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+                options, options[2]);
+
+        if (optionDialog == JOptionPane.YES_OPTION) {
+
+            addStudentList();
+        } else if (optionDialog == JOptionPane.NO_OPTION) {
+
+            SinhVien sv = SinhVienDao.inputStudentFillForm((String)classList.getSelectedItem());
+            if (sv != null) {
+                SinhVienDao.themSinhVien(sv);
+                JOptionPane.showMessageDialog(new JFrame(),"Thêm sinh viên thành công");
+            }
+
+        }
+    }
+
+    private void addStudentList() {
+
+        int confirmDialog = JOptionPane.showConfirmDialog(new JFrame(),
+                "Toàn bộ dữ liệu cũ sẽ bị ghi đè, bạn có muốn tiếp tục?", "Confirm", JOptionPane.YES_NO_OPTION);
 
         if (confirmDialog != 0)
             return;
@@ -61,7 +85,7 @@ public class AddStudentListListener implements ActionListener {
         // if the user selects a file
         if (r == JFileChooser.APPROVE_OPTION) {
             // set the label to the path of the selected file
-            SinhVienDao.xoaToanBoSinhVien();
+            SinhVienDao.xoaToanBoSinhVien((String) classList.getSelectedItem());
             try {
 
                 List<String> studentList = readCsvFile(j.getSelectedFile().getAbsolutePath());

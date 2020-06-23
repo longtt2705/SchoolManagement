@@ -1,7 +1,10 @@
 package edu.main.GUI;
 
-import com.sun.istack.NotNull;
+import edu.dao.LopMonHocDao;
+import edu.dao.MonHocDao;
 import edu.dao.SinhVienDao;
+import edu.pojo.LopMonHoc;
+import edu.pojo.MonHoc;
 import edu.pojo.SinhVien;
 
 import javax.swing.*;
@@ -14,43 +17,38 @@ import java.util.List;
  * edu.main.GUI
  *
  * @Created by Long - StudentID : 18120455
- * @Date 18/06/2020 - 9:22 PM
+ * @Date 22/06/2020 - 8:31 PM
  * @Description
  **/
-public class ShowStudentListListener implements ActionListener {
+public class ShowScheduleListener implements ActionListener {
 
     private final JPanel container;
     private final JFrame frame;
     private final JComboBox<String> baseClass;
-    private final JComboBox<String> subClass;
 
-    public ShowStudentListListener(JFrame frame, JPanel container, @NotNull JComboBox<String> baseClass, JComboBox<String> subClass) {
-        this.frame = frame;
+    public ShowScheduleListener(JPanel container, JFrame frame, JComboBox<String> baseClass) {
         this.container = container;
+        this.frame = frame;
         this.baseClass = baseClass;
-        this.subClass = subClass;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        List<SinhVien> sinhVienList;
 
-        if (subClass == null)
-            sinhVienList = SinhVienDao.layDanhSachSinhVien((String) baseClass.getSelectedItem(), null);
-        else
-            sinhVienList = SinhVienDao.layDanhSachSinhVien((String) baseClass.getSelectedItem(),
-                    (String) subClass.getSelectedItem());
+        String[] columnNames = {"STT", "Mã môn", "Tên môn", "Phòng học"};
+        List<MonHoc> monHocList;
 
-        if (sinhVienList == null)
-            JOptionPane.showMessageDialog(new JFrame(), "Chưa tồn tại danh sách sinh viên của lớp này");
+        monHocList = LopMonHocDao.layDanhSachMonHoc((String) baseClass.getSelectedItem());
 
-        // Create table
-        String[] columnNames = {"STT", "MSSV" , "Họ tên", "Giới tính", "CMND"};
+        if (monHocList == null) {
+            JOptionPane.showMessageDialog(new JFrame(), "Chưa tồn tại thời khóa biểu của lớp này");
+            return;
+        }
 
-        Object[][] data = new Object[sinhVienList.size()][];
-        for (int i = 0; i < sinhVienList.size(); i++) {
-            data[i] = sinhVienList.get(i).toArray(i + 1);
+        Object[][] data = new Object[monHocList.size()][];
+        for (int i = 0; i < monHocList.size(); i++) {
+            data[i] = monHocList.get(i).toArray(i + 1);
         }
 
         JTable table = new JTable(data, columnNames);
@@ -65,8 +63,7 @@ public class ShowStudentListListener implements ActionListener {
             container.remove(TeacherGUI.infoPanel);
 
         JPanel jPanel = new JPanel(new GridLayout(0, 1));
-        jPanel.add(new JLabel("Tên lớp: " + baseClass.getSelectedItem()));
-        jPanel.add(new JLabel("Số lượng: " + data.length));
+        jPanel.add(new JLabel("Thời khóa biểu của lớp: " + baseClass.getSelectedItem()));
 
         container.add(jPanel);
         container.add(scrollPane);
@@ -76,5 +73,6 @@ public class ShowStudentListListener implements ActionListener {
         container.repaint();
         container.revalidate();
         frame.pack();
+
     }
 }

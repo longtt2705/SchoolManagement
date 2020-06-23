@@ -6,7 +6,7 @@ Mapping DTD 3.0//EN"
     <class name="edu.pojo.DanhSachHoc" table="danhsachhoc">
         <id name="danhSachHocPK" type="integer">
             <column name="dshid"/>
-            <generator class="assigned"/>
+            <generator class="identity"/>
         </id>
 
         <property name="diemGK" type="float" column="diemgk" />
