@@ -1,11 +1,7 @@
 package edu.main.GUI;
 
 import edu.dao.LopMonHocDao;
-import edu.dao.MonHocDao;
-import edu.dao.SinhVienDao;
-import edu.pojo.LopMonHoc;
 import edu.pojo.MonHoc;
-import edu.pojo.SinhVien;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,13 +18,9 @@ import java.util.List;
  **/
 public class ShowScheduleListener implements ActionListener {
 
-    private final JPanel container;
-    private final JFrame frame;
     private final JComboBox<String> baseClass;
 
-    public ShowScheduleListener(JPanel container, JFrame frame, JComboBox<String> baseClass) {
-        this.container = container;
-        this.frame = frame;
+    public ShowScheduleListener(JComboBox<String> baseClass) {
         this.baseClass = baseClass;
     }
 
@@ -56,23 +48,9 @@ public class ShowScheduleListener implements ActionListener {
         table.setFillsViewportHeight(true);
         scrollPane.setPreferredSize(new Dimension(TeacherGUI.PANEL_WIDTH, TeacherGUI.PANEL_HEIGHT * 2));
 
-        if (TeacherGUI.table != null)
-            container.remove(TeacherGUI.table);
-
-        if (TeacherGUI.infoPanel != null)
-            container.remove(TeacherGUI.infoPanel);
-
         JPanel jPanel = new JPanel(new GridLayout(0, 1));
         jPanel.add(new JLabel("Thời khóa biểu của lớp: " + baseClass.getSelectedItem()));
 
-        container.add(jPanel);
-        container.add(scrollPane);
-        TeacherGUI.table = scrollPane;
-        TeacherGUI.infoPanel = jPanel;
-
-        container.repaint();
-        container.revalidate();
-        frame.pack();
-
+        TeacherGUI.setTableView(scrollPane, table, jPanel, false);
     }
 }

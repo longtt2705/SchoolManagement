@@ -82,4 +82,25 @@ public class DanhSachHocDao {
             System.err.println(ex);
         }
     }
+
+    public static void xoaDanhSachHoc(DanhSachHoc danhSachHoc) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
+            session.beginTransaction();
+
+            Query query = session.createSQLQuery("delete from danhsachhoc dsh where dsh.mssv = :mssv and dsh.lmhid = :lmhid ;");
+            query.setParameter("mssv", danhSachHoc.getSinhVien().getMaSinhVien());
+            query.setParameter("lmhid", danhSachHoc.getLopMonHoc().getLopMonHocPK());
+
+            query.executeUpdate();
+            session.getTransaction().commit();
+
+            JOptionPane.showMessageDialog(new JFrame(),"Xóa sinh viên thành công");
+
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(new JFrame(),"Có lỗi khi cập nhật bảng Danh sách học",
+                    "Unexpected error", JOptionPane.ERROR_MESSAGE);
+            System.err.println(ex);
+        }
+    }
 }

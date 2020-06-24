@@ -19,14 +19,10 @@ import java.util.List;
  **/
 public class ShowStudentListListener implements ActionListener {
 
-    private final JPanel container;
-    private final JFrame frame;
     private final JComboBox<String> baseClass;
     private final JComboBox<String> subClass;
 
-    public ShowStudentListListener(JFrame frame, JPanel container, @NotNull JComboBox<String> baseClass, JComboBox<String> subClass) {
-        this.frame = frame;
-        this.container = container;
+    public ShowStudentListListener(JComboBox<String> baseClass, JComboBox<String> subClass) {
         this.baseClass = baseClass;
         this.subClass = subClass;
     }
@@ -58,23 +54,20 @@ public class ShowStudentListListener implements ActionListener {
         table.setFillsViewportHeight(true);
         scrollPane.setPreferredSize(new Dimension(TeacherGUI.PANEL_WIDTH, TeacherGUI.PANEL_HEIGHT * 2));
 
-        if (TeacherGUI.table != null)
-            container.remove(TeacherGUI.table);
-
-        if (TeacherGUI.infoPanel != null)
-            container.remove(TeacherGUI.infoPanel);
-
         JPanel jPanel = new JPanel(new GridLayout(0, 1));
-        jPanel.add(new JLabel("Tên lớp: " + baseClass.getSelectedItem()));
+
+        String className = (String) baseClass.getSelectedItem();
+        boolean isDisplaySubClass = false;
+
+        if (subClass != null) {
+            className += "-" + subClass.getSelectedItem();
+            isDisplaySubClass = true;
+        }
+
+
+        jPanel.add(new JLabel("Tên lớp: " + className));
         jPanel.add(new JLabel("Số lượng: " + data.length));
 
-        container.add(jPanel);
-        container.add(scrollPane);
-        TeacherGUI.table = scrollPane;
-        TeacherGUI.infoPanel = jPanel;
-
-        container.repaint();
-        container.revalidate();
-        frame.pack();
+        TeacherGUI.setTableView(scrollPane, table, jPanel, isDisplaySubClass);
     }
 }

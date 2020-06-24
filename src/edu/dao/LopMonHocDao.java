@@ -37,8 +37,6 @@ public class LopMonHocDao {
         return null;
     }
 
-
-
     public static LopMonHoc layLopMonHoc(LopMonHoc lopMonHoc) {
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {

@@ -2,9 +2,7 @@ package edu.main.GUI;
 
 import edu.dao.LopMonHocDao;
 import edu.dao.LopSinhHoatDao;
-import edu.pojo.LopMonHoc;
 import edu.pojo.LopSinhHoat;
-import edu.pojo.MonHoc;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,8 +32,10 @@ public class TeacherGUI {
     private static JComboBox<String> baseClass;
     private static JComboBox<String> subjectClass;
 
-    public static JScrollPane table = null;
-    public static JPanel infoPanel = null;
+    private static JScrollPane tableParent = null;
+    private static JTable table = null;
+    private static JPanel infoPanel = null;
+    private static boolean isDisplaySubClass = false;
 
     /**
      * Create the GUI and show it.  For thread safety,
@@ -122,9 +122,9 @@ public class TeacherGUI {
         // Add Listener
         addClassButton.addActionListener(new AddBaseClassListener(getClassStringArray(), classList));
         addStudentListButton.addActionListener(new AddStudentListener(classList));
-        showStudentListButton.addActionListener(new ShowStudentListListener(frame, container, classList, null));
+        showStudentListButton.addActionListener(new ShowStudentListListener(classList, null));
         addScheduleButton.addActionListener(new AddScheduleListener(classList));
-        showScheduleButton.addActionListener(new ShowScheduleListener(container, frame, classList));
+        showScheduleButton.addActionListener(new ShowScheduleListener(classList));
 
         // label constraint
         springLayout.putConstraint(SpringLayout.WEST, baseClassLabel, SPACE_SIZE, SpringLayout.WEST, panel);
@@ -188,7 +188,8 @@ public class TeacherGUI {
         panel.add(subClassList);
 
         // Add Listener
-        showStudentListButton.addActionListener(new ShowStudentListListener(frame, container, baseClass, subjectClass));
+        showStudentListButton.addActionListener(new ShowStudentListListener(baseClass, subjectClass));
+        deleteStudentButton.addActionListener(new DeleteStudentListener(baseClass, subjectClass));
 
         // label constraint
         springLayout.putConstraint(SpringLayout.WEST, baseClassLabel, SPACE_SIZE, SpringLayout.WEST, panel);
@@ -251,5 +252,34 @@ public class TeacherGUI {
         List<String> baseClassNames = LopMonHocDao.layDanhSachMaMonHoc(maLop);
         if (baseClassNames != null)
             baseClassNames.forEach(subjectClassesComboBox::addItem);
+    }
+
+    public static void setTableView(JScrollPane scrollPane, JTable table, JPanel statusBar, boolean isDisplaySubClass) {
+
+        if (TeacherGUI.tableParent != null)
+            container.remove(TeacherGUI.tableParent);
+
+        if (TeacherGUI.infoPanel != null)
+            container.remove(TeacherGUI.infoPanel);
+
+        TeacherGUI.table = table;
+        container.add(statusBar);
+        container.add(scrollPane);
+        TeacherGUI.tableParent = scrollPane;
+        TeacherGUI.infoPanel = statusBar;
+
+        container.repaint();
+        container.revalidate();
+        frame.pack();
+
+        TeacherGUI.isDisplaySubClass = isDisplaySubClass;
+    }
+
+    public static JTable getTableView() {
+        return table;
+    }
+
+    public static boolean isDisplaySubClass() {
+        return isDisplaySubClass;
     }
 }
