@@ -2,6 +2,7 @@ package edu.dao;
 
 import edu.pojo.DanhSachHoc;
 import edu.pojo.LopMonHoc;
+import edu.pojo.SinhVien;
 import edu.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -76,6 +77,9 @@ public class DanhSachHocDao {
             session.getTransaction().commit();
 
 
+            JOptionPane.showMessageDialog(new JFrame(),"Đăng ký thành công");
+
+
         } catch (HibernateException ex) {
             JOptionPane.showMessageDialog(new JFrame(),"Có lỗi khi đăng ký môn học",
                     "Unexpected error", JOptionPane.ERROR_MESSAGE);
@@ -102,5 +106,29 @@ public class DanhSachHocDao {
                     "Unexpected error", JOptionPane.ERROR_MESSAGE);
             System.err.println(ex);
         }
+    }
+
+    public static List<LopMonHoc> layDanhSachLopMonHocChuaThamGia(String mssv) {
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
+            String hql = "select lmh from LopMonHoc lmh where lmh.lopMonHocPK not in " +
+                    "(select dsh.lopMonHoc.lopMonHocPK from DanhSachHoc dsh where dsh.sinhVien.maSinhVien = :mssv)";
+
+            Query query = session.createQuery(hql);
+            query.setParameter("mssv", mssv);
+            List<LopMonHoc> lopMonHocList = query.list();
+
+            if (lopMonHocList.size() == 0)
+                return null;
+            return lopMonHocList;
+
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(new JFrame(),"Có lỗi khi lấy thông tin danh sách học",
+                    "Unexpected error", JOptionPane.ERROR_MESSAGE);
+            System.err.println(ex);
+        }
+
+        return null;
     }
 }

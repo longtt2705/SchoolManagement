@@ -51,6 +51,6 @@ public class ShowScheduleListener implements ActionListener {
         JPanel jPanel = new JPanel(new GridLayout(0, 1));
         jPanel.add(new JLabel("Thời khóa biểu của lớp: " + baseClass.getSelectedItem()));
 
-        TeacherGUI.setTableView(scrollPane, table, jPanel, false);
+        TeacherGUI.setTableView(scrollPane, table, jPanel, TeacherGUI.TABLE_SCHEDULE);
     }
 }

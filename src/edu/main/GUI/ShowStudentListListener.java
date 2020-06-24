@@ -57,17 +57,17 @@ public class ShowStudentListListener implements ActionListener {
         JPanel jPanel = new JPanel(new GridLayout(0, 1));
 
         String className = (String) baseClass.getSelectedItem();
-        boolean isDisplaySubClass = false;
+        int type = TeacherGUI.TABLE_BASE_CLASS;
 
         if (subClass != null) {
             className += "-" + subClass.getSelectedItem();
-            isDisplaySubClass = true;
+            type = TeacherGUI.TABLE_SUBJECT_CLASS;
         }
 
 
         jPanel.add(new JLabel("Tên lớp: " + className));
         jPanel.add(new JLabel("Số lượng: " + data.length));
 
-        TeacherGUI.setTableView(scrollPane, table, jPanel, isDisplaySubClass);
+        TeacherGUI.setTableView(scrollPane, table, jPanel, type);
     }
 }

@@ -24,8 +24,12 @@ public class TeacherGUI {
 
     public static final int SPACE_SIZE = 5;
     public static final int TAB_SIZE = 4 * SPACE_SIZE;
-    public static final int PANEL_HEIGHT = 100;
+    public static final int PANEL_HEIGHT = 125;
     public static final int PANEL_WIDTH = 450;
+
+    public static final int TABLE_SCHEDULE = 0;
+    public static final int TABLE_BASE_CLASS = 1;
+    public static final int TABLE_SUBJECT_CLASS = 2;
 
     private static JPanel container;
     private static JFrame frame;
@@ -35,7 +39,7 @@ public class TeacherGUI {
     private static JScrollPane tableParent = null;
     private static JTable table = null;
     private static JPanel infoPanel = null;
-    private static boolean isDisplaySubClass = false;
+    private static int typeTable;
 
     /**
      * Create the GUI and show it.  For thread safety,
@@ -94,6 +98,7 @@ public class TeacherGUI {
         JButton addScheduleButton = new JButton("Thêm thời khóa biểu");
         JButton showStudentListButton = new JButton("Xem danh sách lớp");
         JButton showScheduleButton = new JButton("Xem thời khóa biểu");
+        JButton enrollCoursesButton = new JButton("Đăng ký môn học");
 
         // add buttons to panel
         panel.add(addClassButton);
@@ -101,6 +106,7 @@ public class TeacherGUI {
         panel.add(addScheduleButton);
         panel.add(showStudentListButton);
         panel.add(showScheduleButton);
+        panel.add(enrollCoursesButton);
 
         // Label
         JLabel baseClassLabel = new JLabel("Lớp sinh hoạt: ");
@@ -125,6 +131,7 @@ public class TeacherGUI {
         showStudentListButton.addActionListener(new ShowStudentListListener(classList, null));
         addScheduleButton.addActionListener(new AddScheduleListener(classList));
         showScheduleButton.addActionListener(new ShowScheduleListener(classList));
+        enrollCoursesButton.addActionListener(new EnrollStudentListener());
 
         // label constraint
         springLayout.putConstraint(SpringLayout.WEST, baseClassLabel, SPACE_SIZE, SpringLayout.WEST, panel);
@@ -153,6 +160,10 @@ public class TeacherGUI {
         // showScheduleButton constraint
         springLayout.putConstraint(SpringLayout.WEST, showScheduleButton, SPACE_SIZE, SpringLayout.EAST, addScheduleButton);
         springLayout.putConstraint(SpringLayout.NORTH, showScheduleButton, SPACE_SIZE, SpringLayout.SOUTH, addStudentListButton);
+
+        // enrollCoursesButton constraint
+        springLayout.putConstraint(SpringLayout.WEST, enrollCoursesButton, SPACE_SIZE, SpringLayout.EAST, classList);
+        springLayout.putConstraint(SpringLayout.NORTH, enrollCoursesButton, SPACE_SIZE, SpringLayout.SOUTH, addScheduleButton);
 
         return panel;
     }
@@ -254,7 +265,7 @@ public class TeacherGUI {
             baseClassNames.forEach(subjectClassesComboBox::addItem);
     }
 
-    public static void setTableView(JScrollPane scrollPane, JTable table, JPanel statusBar, boolean isDisplaySubClass) {
+    public static void setTableView(JScrollPane scrollPane, JTable table, JPanel statusBar, int typeTable) {
 
         if (TeacherGUI.tableParent != null)
             container.remove(TeacherGUI.tableParent);
@@ -272,14 +283,14 @@ public class TeacherGUI {
         container.revalidate();
         frame.pack();
 
-        TeacherGUI.isDisplaySubClass = isDisplaySubClass;
+        TeacherGUI.typeTable = typeTable;
     }
 
     public static JTable getTableView() {
         return table;
     }
 
-    public static boolean isDisplaySubClass() {
-        return isDisplaySubClass;
+    public static int getTypeTable() {
+        return typeTable;
     }
 }

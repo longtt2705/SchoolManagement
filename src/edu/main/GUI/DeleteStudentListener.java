@@ -29,7 +29,7 @@ public class DeleteStudentListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if (!TeacherGUI.isDisplaySubClass()) {
+        if (TeacherGUI.getTypeTable() != TeacherGUI.TABLE_SUBJECT_CLASS) {
             JOptionPane.showMessageDialog(new JFrame(),"Bạn cần chọn một sinh viên của lớp môn học",
                     "Delete error", JOptionPane.ERROR_MESSAGE);
             return;
