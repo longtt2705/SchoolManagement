@@ -44,7 +44,7 @@ public class TaiKhoanDao {
             String hql = "select tk from TaiKhoan tk where tk.tenDangNhap = :tendangnhap and tk.matKhau = :matkhau";
             Query query = session.createQuery(hql);
             query.setParameter("tendangnhap", taiKhoan.getTenDangNhap());
-            query.setParameter("matkhau", taiKhoan.getTenDangNhap());
+            query.setParameter("matkhau", taiKhoan.getMatKhau());
 
             List<TaiKhoan> list = query.list();
             if (list.size() == 0)
@@ -101,5 +101,23 @@ public class TaiKhoanDao {
                     "Unexpected error", JOptionPane.ERROR_MESSAGE);
             System.err.println(ex);
         }
+    }
+
+    public static void capNhatTaiKhoan(TaiKhoan taiKhoan) {
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
+            session.beginTransaction();
+            session.saveOrUpdate(taiKhoan);
+            session.getTransaction().commit();
+
+            JOptionPane.showMessageDialog(null,"Cập nhật mật khẩu thành công");
+
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(new JFrame(),"Có lỗi khi cập nhật bảng Tài khoản",
+                    "Unexpected error", JOptionPane.ERROR_MESSAGE);
+            System.err.println(ex);
+        }
+
     }
 }
