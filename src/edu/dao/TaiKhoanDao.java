@@ -18,7 +18,7 @@ import java.util.List;
  **/
 public class TaiKhoanDao {
 
-    public static List layTaiKhoan() {
+    public static List<TaiKhoan> layTaiKhoan() {
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
@@ -29,6 +29,30 @@ public class TaiKhoanDao {
 
         } catch (HibernateException ex) {
             JOptionPane.showMessageDialog(new JFrame(),"Có lỗi khi cập nhật bảng Tài khoản",
+                    "Unexpected error", JOptionPane.ERROR_MESSAGE);
+            System.err.println(ex);
+        }
+
+        return null;
+    }
+
+    public static TaiKhoan layTaiKhoan(TaiKhoan taiKhoan) {
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
+            String hql = "select tk from TaiKhoan tk where tk.tenDangNhap = :tendangnhap and tk.matKhau = :matkhau";
+            Query query = session.createQuery(hql);
+            query.setParameter("tendangnhap", taiKhoan.getTenDangNhap());
+            query.setParameter("matkhau", taiKhoan.getTenDangNhap());
+
+            List<TaiKhoan> list = query.list();
+            if (list.size() == 0)
+                return null;
+
+            return list.get(0);
+
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(new JFrame(),"Có lỗi khi lấy thông tin bảng Tài khoản",
                     "Unexpected error", JOptionPane.ERROR_MESSAGE);
             System.err.println(ex);
         }

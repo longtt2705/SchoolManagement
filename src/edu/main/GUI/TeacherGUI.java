@@ -6,8 +6,6 @@ import edu.pojo.LopSinhHoat;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +28,7 @@ public class TeacherGUI {
     public static final int TABLE_SCHEDULE = 0;
     public static final int TABLE_BASE_CLASS = 1;
     public static final int TABLE_SUBJECT_CLASS = 2;
+    public static final int TABLE_TRANSCRIPT = 3;
 
     private static JPanel container;
     private static JFrame frame;
@@ -66,13 +65,16 @@ public class TeacherGUI {
         // Components
         // Buttons
         JButton logoutButton = new JButton("Đăng xuất");
+        logoutButton.addActionListener(al -> {
+            frame.dispose();
+        });
         JButton changePassButton = new JButton("Đổi mật khẩu");
 
         // Navigate Bar
         JPanel navigatePanel = new JPanel();
         navigatePanel.setLayout(new BoxLayout(navigatePanel, BoxLayout.X_AXIS));
-        navigatePanel.add(logoutButton);
         navigatePanel.add(changePassButton);
+        navigatePanel.add(logoutButton);
         container.add(navigatePanel);
 
         JPanel baseClassPanel = createBaseClassPanel();
@@ -87,10 +89,13 @@ public class TeacherGUI {
     private static JPanel createBaseClassPanel() {
 
         // Set up the panel
-        JPanel panel = new JPanel();
+        JPanel container = new JPanel();
         SpringLayout springLayout = new SpringLayout();
-        panel.setLayout(springLayout);
-        panel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+        container.setLayout(springLayout);
+        container.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+        JPanel childPanel = new JPanel();
+        childPanel.setLayout(new GridLayout(0, 2));
+        container.add(childPanel);
 
         // Button
         JButton addClassButton = new JButton("+");
@@ -101,29 +106,26 @@ public class TeacherGUI {
         JButton enrollCoursesButton = new JButton("Đăng ký môn học");
 
         // add buttons to panel
-        panel.add(addClassButton);
-        panel.add(addStudentListButton);
-        panel.add(addScheduleButton);
-        panel.add(showStudentListButton);
-        panel.add(showScheduleButton);
-        panel.add(enrollCoursesButton);
+        container.add(addClassButton);
+        childPanel.add(addStudentListButton);
+        childPanel.add(addScheduleButton);
+        childPanel.add(showStudentListButton);
+        childPanel.add(showScheduleButton);
+        childPanel.add(enrollCoursesButton);
 
         // Label
         JLabel baseClassLabel = new JLabel("Lớp sinh hoạt: ");
-        panel.add(baseClassLabel);
+        container.add(baseClassLabel);
 
         // ComboBox
         JComboBox<String> classList = new JComboBox<>(Objects.requireNonNull(getClassStringArray()));
         baseClass = classList;
-        baseClass.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String maLop = (String) classList.getSelectedItem();//get the selected item
-                if (subjectClass != null)
-                    updateSubjectClassComboBox(maLop, subjectClass);
-            }
+        baseClass.addActionListener(al -> {
+            String maLop = (String) classList.getSelectedItem();//get the selected item
+            if (subjectClass != null)
+                updateSubjectClassComboBox(maLop, subjectClass);
         });
-        panel.add(classList);
+        container.add(classList);
 
         // Add Listener
         addClassButton.addActionListener(new AddBaseClassListener(getClassStringArray(), classList));
@@ -134,99 +136,79 @@ public class TeacherGUI {
         enrollCoursesButton.addActionListener(new EnrollStudentListener());
 
         // label constraint
-        springLayout.putConstraint(SpringLayout.WEST, baseClassLabel, SPACE_SIZE, SpringLayout.WEST, panel);
-        springLayout.putConstraint(SpringLayout.NORTH, baseClassLabel, SPACE_SIZE, SpringLayout.NORTH, panel);
+        springLayout.putConstraint(SpringLayout.WEST, baseClassLabel, SPACE_SIZE, SpringLayout.WEST, container);
+        springLayout.putConstraint(SpringLayout.NORTH, baseClassLabel, SPACE_SIZE, SpringLayout.NORTH, container);
 
         // addClassButton constraint
-        springLayout.putConstraint(SpringLayout.WEST, addClassButton, 2 * SPACE_SIZE, SpringLayout.WEST, panel);
+        springLayout.putConstraint(SpringLayout.WEST, addClassButton, 2 * SPACE_SIZE, SpringLayout.WEST, container);
         springLayout.putConstraint(SpringLayout.NORTH, addClassButton, SPACE_SIZE, SpringLayout.SOUTH, baseClassLabel);
 
         // comboBox constraint
         springLayout.putConstraint(SpringLayout.WEST, classList, SPACE_SIZE, SpringLayout.EAST, addClassButton);
         springLayout.putConstraint(SpringLayout.NORTH, classList, 0, SpringLayout.NORTH, addClassButton);
 
-        // addStudentListButton constraint
-        springLayout.putConstraint(SpringLayout.WEST, addStudentListButton, SPACE_SIZE, SpringLayout.EAST, classList);
-        springLayout.putConstraint(SpringLayout.NORTH, addStudentListButton, 0, SpringLayout.NORTH, classList);
+        // childPanel constraint
+        springLayout.putConstraint(SpringLayout.WEST, childPanel, SPACE_SIZE, SpringLayout.EAST, classList);
+        springLayout.putConstraint(SpringLayout.NORTH, childPanel, 0, SpringLayout.NORTH, classList);
 
-        // showStudentListButton constraint
-        springLayout.putConstraint(SpringLayout.WEST, showStudentListButton, SPACE_SIZE, SpringLayout.EAST, addStudentListButton);
-        springLayout.putConstraint(SpringLayout.NORTH, showStudentListButton, 0, SpringLayout.NORTH, classList);
-
-        // addScheduleButton constraint
-        springLayout.putConstraint(SpringLayout.WEST, addScheduleButton, SPACE_SIZE, SpringLayout.EAST, classList);
-        springLayout.putConstraint(SpringLayout.NORTH, addScheduleButton, SPACE_SIZE, SpringLayout.SOUTH, addStudentListButton);
-
-        // showScheduleButton constraint
-        springLayout.putConstraint(SpringLayout.WEST, showScheduleButton, SPACE_SIZE, SpringLayout.EAST, addScheduleButton);
-        springLayout.putConstraint(SpringLayout.NORTH, showScheduleButton, SPACE_SIZE, SpringLayout.SOUTH, addStudentListButton);
-
-        // enrollCoursesButton constraint
-        springLayout.putConstraint(SpringLayout.WEST, enrollCoursesButton, SPACE_SIZE, SpringLayout.EAST, classList);
-        springLayout.putConstraint(SpringLayout.NORTH, enrollCoursesButton, SPACE_SIZE, SpringLayout.SOUTH, addScheduleButton);
-
-        return panel;
+        return container;
     }
 
     private static JPanel createSubjectClassPanel() {
 
         // Set up the panel
-        JPanel panel = new JPanel();
+        JPanel container = new JPanel();
         SpringLayout springLayout = new SpringLayout();
-        panel.setLayout(springLayout);
-        panel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+        container.setLayout(springLayout);
+        container.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+        JPanel childPanel = new JPanel();
+        childPanel.setLayout(new GridLayout(0, 2));
+        container.add(childPanel);
 
         // Button
-        JButton addStudentButton = new JButton("Thêm sinh viên");
         JButton showStudentListButton = new JButton("Xem danh sách lớp");
         JButton deleteStudentButton = new JButton("Xóa sinh viên");
         JButton addTranscriptButton = new JButton("Thêm bảng điểm");
+        JButton showTranscriptButton = new JButton("Xem bảng điểm");
+        JButton updateTranscriptButton = new JButton("Sửa điểm sinh viên");
 
         // add buttons to panel
-        panel.add(addStudentButton);
-        panel.add(showStudentListButton);
-        panel.add(deleteStudentButton);
-        panel.add(addTranscriptButton);
+        childPanel.add(showStudentListButton);
+        childPanel.add(deleteStudentButton);
+        childPanel.add(addTranscriptButton);
+        childPanel.add(showTranscriptButton);
+        childPanel.add(updateTranscriptButton);
 
         // Label
         JLabel baseClassLabel = new JLabel("Các môn học: ");
-        panel.add(baseClassLabel);
+        container.add(baseClassLabel);
 
         // ComboBox
         List<String> data = LopMonHocDao.layDanhSachMaMonHoc((String) baseClass.getSelectedItem());
         JComboBox<String> subClassList = new JComboBox<>(data.toArray(new String[0]));
         subjectClass = subClassList;
-        panel.add(subClassList);
+        container.add(subClassList);
 
         // Add Listener
         showStudentListButton.addActionListener(new ShowStudentListListener(baseClass, subjectClass));
         deleteStudentButton.addActionListener(new DeleteStudentListener(baseClass, subjectClass));
+        addTranscriptButton.addActionListener(new AddTranscriptListener(baseClass, subjectClass));
+        showTranscriptButton.addActionListener(new ShowTranscriptListener(baseClass, subjectClass));
+        updateTranscriptButton.addActionListener(new UpdateTranscriptListener(baseClass, subjectClass));
 
         // label constraint
-        springLayout.putConstraint(SpringLayout.WEST, baseClassLabel, SPACE_SIZE, SpringLayout.WEST, panel);
-        springLayout.putConstraint(SpringLayout.NORTH, baseClassLabel, SPACE_SIZE, SpringLayout.NORTH, panel);
+        springLayout.putConstraint(SpringLayout.WEST, baseClassLabel, SPACE_SIZE, SpringLayout.WEST, container);
+        springLayout.putConstraint(SpringLayout.NORTH, baseClassLabel, SPACE_SIZE, SpringLayout.NORTH, container);
 
         // comboBox constraint
-        springLayout.putConstraint(SpringLayout.WEST, subClassList, 2 * SPACE_SIZE, SpringLayout.WEST, panel);
+        springLayout.putConstraint(SpringLayout.WEST, subClassList, 2 * SPACE_SIZE, SpringLayout.WEST, container);
         springLayout.putConstraint(SpringLayout.NORTH, subClassList, SPACE_SIZE, SpringLayout.SOUTH, baseClassLabel);
 
-        // addStudentListButton constraint
-        springLayout.putConstraint(SpringLayout.WEST, addStudentButton, SPACE_SIZE, SpringLayout.EAST, subClassList);
-        springLayout.putConstraint(SpringLayout.NORTH, addStudentButton, 0, SpringLayout.NORTH, subClassList);
+        // childPanel constraint
+        springLayout.putConstraint(SpringLayout.WEST, childPanel, SPACE_SIZE, SpringLayout.EAST, subClassList);
+        springLayout.putConstraint(SpringLayout.NORTH, childPanel, 0, SpringLayout.NORTH, subClassList);
 
-        // showStudentListButton constraint
-        springLayout.putConstraint(SpringLayout.WEST, deleteStudentButton, SPACE_SIZE, SpringLayout.EAST, addStudentButton);
-        springLayout.putConstraint(SpringLayout.NORTH, deleteStudentButton, 0, SpringLayout.NORTH, subClassList);
-
-        // addScheduleButton constraint
-        springLayout.putConstraint(SpringLayout.WEST, showStudentListButton, SPACE_SIZE, SpringLayout.EAST, subClassList);
-        springLayout.putConstraint(SpringLayout.NORTH, showStudentListButton, SPACE_SIZE, SpringLayout.SOUTH, addStudentButton);
-
-        // showScheduleButton constraint
-        springLayout.putConstraint(SpringLayout.WEST, addTranscriptButton, SPACE_SIZE, SpringLayout.EAST, showStudentListButton);
-        springLayout.putConstraint(SpringLayout.NORTH, addTranscriptButton, SPACE_SIZE, SpringLayout.SOUTH, addStudentButton);
-
-        return panel;
+        return container;
     }
 
     public static String[] getClassStringArray() {

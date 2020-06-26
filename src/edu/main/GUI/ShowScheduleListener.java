@@ -33,7 +33,8 @@ public class ShowScheduleListener implements ActionListener {
 
         monHocList = LopMonHocDao.layDanhSachMonHoc((String) baseClass.getSelectedItem());
 
-        if (monHocList == null) {
+        assert monHocList != null;
+        if (monHocList.size() == 0) {
             JOptionPane.showMessageDialog(new JFrame(), "Chưa tồn tại thời khóa biểu của lớp này");
             return;
         }

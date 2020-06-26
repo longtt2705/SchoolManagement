@@ -25,6 +25,11 @@ public class TaiKhoan {
         this.loaiTaiKhoan = loaiTaiKhoan;
     }
 
+    public TaiKhoan(String tenDangNhap, String matKhau) {
+        this.tenDangNhap = tenDangNhap;
+        this.matKhau = matKhau;
+    }
+
     public TaiKhoan(String tenDangNhap, String matKhau, Boolean loaiTaiKhoan, SinhVien sinhVien) {
         this.tenDangNhap = tenDangNhap;
         this.matKhau = matKhau;

@@ -22,22 +22,23 @@ import java.util.List;
  * edu.main.GUI
  *
  * @Created by Long - StudentID : 18120455
- * @Date 20/06/2020 - 8:20 AM
+ * @Date 24/06/2020 - 8:55 PM
  * @Description
  **/
-public class AddScheduleListener implements ActionListener {
+public class AddTranscriptListener implements ActionListener {
+    JComboBox<String> baseClass;
+    JComboBox<String> subClass;
 
-    JComboBox<String> classList;
-
-    public AddScheduleListener(JComboBox<String> classList) {
-        this.classList = classList;
+    public AddTranscriptListener(JComboBox<String> baseClass, JComboBox<String> subClass) {
+        this.baseClass = baseClass;
+        this.subClass = subClass;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if (classList.getSelectedItem() == null) {
-            JOptionPane.showMessageDialog(new JFrame(),"Chưa tồn tại lớp sinh hoạt nào", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        if (baseClass.getSelectedItem() == null || subClass.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(new JFrame(),"Chưa tồn tại lớp học", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -61,33 +62,21 @@ public class AddScheduleListener implements ActionListener {
         if (r == JFileChooser.APPROVE_OPTION) {
 
             try {
-                String maLop = (String) classList.getSelectedItem();
-                List<String> scheduleList = readCsvFile(j.getSelectedFile().getAbsolutePath());
-                scheduleList.forEach(line -> {
+                String maLop = (String) baseClass.getSelectedItem();
+                String maMon = (String) subClass.getSelectedItem();
+                LopMonHoc lopMonHoc = LopMonHocDao.layLopMonHoc(new LopMonHoc(new LopSinhHoat(maLop), new MonHoc(maMon)));
 
-                    MonHoc monHoc = MonHoc.ParseStringToSubject(line);
-                    LopMonHoc lopMonHoc = new LopMonHoc(
-                            new LopSinhHoat(maLop), monHoc);
+                List<String> transcriptList = readCsvFile(j.getSelectedFile().getAbsolutePath());
 
-                    // Add subject
-                    MonHocDao.themMonHoc(monHoc);
-                    LopMonHocDao.themLopMonHoc(lopMonHoc);
+                transcriptList.forEach(line -> {
 
-                    lopMonHoc = LopMonHocDao.layLopMonHoc(lopMonHoc);
+                    DanhSachHoc danhSachHoc = DanhSachHoc.ParseStringToList(line, lopMonHoc);
 
-                    List<SinhVien> studentList = SinhVienDao.layDanhSachSinhVien(
-                            maLop, null);
-
-                    LopMonHoc finalLopMonHoc = lopMonHoc;
-                    if (studentList != null) {
-                        studentList.forEach(student -> {
-
-                            DanhSachHocDao.themDanhSachHoc(new DanhSachHoc(student, finalLopMonHoc));
-                        });
-                    }
+                    // update grade
+                    DanhSachHocDao.capNhatDanhSachHoc(danhSachHoc);
                 });
 
-                JOptionPane.showMessageDialog(new JFrame(),"Thêm danh sách thành công");
+                JOptionPane.showMessageDialog(new JFrame(),"Thêm bảng điểm thành công");
             } catch (IOException ioException) {
                 JOptionPane.showMessageDialog(new JFrame(),"Có lỗi xảy ra", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 ioException.printStackTrace();

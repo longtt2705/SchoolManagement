@@ -38,8 +38,11 @@ public class ShowStudentListListener implements ActionListener {
             sinhVienList = SinhVienDao.layDanhSachSinhVien((String) baseClass.getSelectedItem(),
                     (String) subClass.getSelectedItem());
 
-        if (sinhVienList == null)
+        assert sinhVienList != null;
+        if (sinhVienList.size() == 0) {
             JOptionPane.showMessageDialog(new JFrame(), "Chưa tồn tại danh sách sinh viên của lớp này");
+            return;
+        }
 
         // Create table
         String[] columnNames = {"STT", "MSSV" , "Họ tên", "Giới tính", "CMND"};

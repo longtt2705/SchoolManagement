@@ -1,9 +1,6 @@
 package edu.main.GUI;
 
-import edu.dao.DanhSachHocDao;
-import edu.dao.LopMonHocDao;
-import edu.dao.MonHocDao;
-import edu.dao.SinhVienDao;
+import edu.dao.*;
 import edu.pojo.*;
 
 import javax.swing.*;
@@ -26,14 +23,21 @@ public class EnrollStudentListener implements ActionListener {
 
         if (TeacherGUI.getTypeTable() != TeacherGUI.TABLE_BASE_CLASS) {
             JOptionPane.showMessageDialog(new JFrame(),"Bạn cần chọn một sinh viên của lớp sinh hoạt",
-                    "Delete error", JOptionPane.ERROR_MESSAGE);
+                    "Select error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         JTable currentTable = TeacherGUI.getTableView();
         int column = 1; // mssv
         int row = currentTable.getSelectedRow();
-        String mssv = currentTable.getModel().getValueAt(row, column).toString();
+        String mssv;
+        try {
+            mssv = currentTable.getModel().getValueAt(row, column).toString();
+        } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
+            JOptionPane.showMessageDialog(new JFrame(),"Bạn cần chọn một dòng",
+                    "Select error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         List<LopMonHoc> lopMonHocList = DanhSachHocDao.layDanhSachLopMonHocChuaThamGia(mssv);
         if (lopMonHocList == null) {
@@ -59,10 +63,11 @@ public class EnrollStudentListener implements ActionListener {
         if (result == JOptionPane.OK_OPTION) {
 
             String monHocName = ((String) classComboBox.getSelectedItem()).split("-")[1];
+            String lopHocName = ((String) classComboBox.getSelectedItem()).split("-")[0];
 
             DanhSachHoc danhSachHoc = new DanhSachHoc();
             SinhVien sinhVien = SinhVienDao.layThongTinSinhVienByMSSV(mssv);
-            LopSinhHoat lopSinhHoat = sinhVien.getLopSinhHoat();
+            LopSinhHoat lopSinhHoat = LopSinhHoatDao.layLopSinhHoat(lopHocName);
             MonHoc monHoc = MonHocDao.layThongTinMonHocByMaMon(monHocName);
 
             danhSachHoc.setSinhVien(sinhVien);
@@ -70,6 +75,8 @@ public class EnrollStudentListener implements ActionListener {
             danhSachHoc.setLopMonHoc(lopMonHoc);
 
             DanhSachHocDao.themDanhSachHoc(danhSachHoc);
+
+            JOptionPane.showMessageDialog(new JFrame(),"Đăng ký thành công");
         }
     }
 }

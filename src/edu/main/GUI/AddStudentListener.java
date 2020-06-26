@@ -36,6 +36,11 @@ public class AddStudentListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
+        if (classList.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(new JFrame(),"Chưa tồn tại lớp sinh hoạt nào", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         Object[] options = {"Thêm danh sách",
                 "Thêm một sinh viên",
                 "Cancel"};
@@ -45,7 +50,6 @@ public class AddStudentListener implements ActionListener {
                 options, options[2]);
 
         if (optionDialog == JOptionPane.YES_OPTION) {
-
             addStudentList();
         } else if (optionDialog == JOptionPane.NO_OPTION) {
 
@@ -63,7 +67,7 @@ public class AddStudentListener implements ActionListener {
         int confirmDialog = JOptionPane.showConfirmDialog(new JFrame(),
                 "Toàn bộ dữ liệu cũ sẽ bị ghi đè, bạn có muốn tiếp tục?", "Confirm", JOptionPane.YES_NO_OPTION);
 
-        if (confirmDialog != 0)
+        if (confirmDialog != JOptionPane.YES_OPTION)
             return;
 
         // create an object of JFileChooser class

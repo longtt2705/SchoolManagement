@@ -20,7 +20,7 @@ import java.util.List;
  **/
 public class DanhSachHocDao {
 
-    public static List layToanBoDanhSachHoc() {
+    public static List<DanhSachHoc> layToanBoDanhSachHoc() {
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
@@ -36,21 +36,40 @@ public class DanhSachHocDao {
         return null;
     }
 
-    public static LopMonHoc layDanhSachHoc(DanhSachHoc danhSachHoc) {
+    public static DanhSachHoc layDanhSachHoc(DanhSachHoc danhSachHoc) {
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String hql = "from DanhSachHoc dsh where dsh.sinhVien.maSinhVien = " +
+            String hql = "select dsh from DanhSachHoc dsh where dsh.sinhVien.maSinhVien = " +
                     ":maSinhVien and dsh.lopMonHoc.lopMonHocPK = :lopMonHocPK";
 
             Query query = session.createQuery(hql);
             query.setParameter("maSinhVien", danhSachHoc.getSinhVien().getMaSinhVien());
             query.setParameter("lopMonHocPK", danhSachHoc.getLopMonHoc().getLopMonHocPK());
 
-            List<LopMonHoc> list = query.list();
+            List<DanhSachHoc> list = query.list();
             if (list.size() == 0)
                 return null;
 
             return list.get(0);
+
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(new JFrame(),"Có lỗi khi lấy thông tin Sinh Viên",
+                    "Unexpected error", JOptionPane.ERROR_MESSAGE);
+            System.err.println(ex);
+        }
+
+        return null;
+    }
+
+    public static List<DanhSachHoc> layDanhSachHoc(LopMonHoc lopMonHoc) {
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "select dsh from DanhSachHoc dsh where dsh.lopMonHoc.lopMonHocPK = :lopMonHocPK";
+
+            Query query = session.createQuery(hql);
+            query.setParameter("lopMonHocPK", lopMonHoc.getLopMonHocPK());
+
+            return query.list();
 
         } catch (HibernateException ex) {
             JOptionPane.showMessageDialog(new JFrame(),"Có lỗi khi lấy thông tin Sinh Viên",
@@ -68,7 +87,7 @@ public class DanhSachHocDao {
             session.beginTransaction();
 
             if (layDanhSachHoc(danhSachHoc) != null) {
-                JOptionPane.showMessageDialog(new JFrame(),"Học sinh này đã học lớp này rồi",
+                JOptionPane.showMessageDialog(new JFrame(),"Danh sách học đã tồn tại",
                         "Duplicate value error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -76,12 +95,30 @@ public class DanhSachHocDao {
             session.save(danhSachHoc);
             session.getTransaction().commit();
 
-
-            JOptionPane.showMessageDialog(new JFrame(),"Đăng ký thành công");
-
-
         } catch (HibernateException ex) {
             JOptionPane.showMessageDialog(new JFrame(),"Có lỗi khi đăng ký môn học",
+                    "Unexpected error", JOptionPane.ERROR_MESSAGE);
+            System.err.println(ex);
+        }
+    }
+
+    public static void capNhatDanhSachHoc(DanhSachHoc danhSachHoc) {
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
+            session.beginTransaction();
+
+            if (layDanhSachHoc(danhSachHoc) == null) {
+                JOptionPane.showMessageDialog(new JFrame(),"Danh sách học chưa tồn tại",
+                        "Non-exist error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            session.update(danhSachHoc);
+            session.getTransaction().commit();
+
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(new JFrame(),"Có lỗi khi cập nhật bảng Danh sách học",
                     "Unexpected error", JOptionPane.ERROR_MESSAGE);
             System.err.println(ex);
         }
@@ -99,7 +136,9 @@ public class DanhSachHocDao {
             query.executeUpdate();
             session.getTransaction().commit();
 
-            JOptionPane.showMessageDialog(new JFrame(),"Xóa sinh viên thành công");
+            String tenLop = danhSachHoc.getLopMonHoc().getLopSinhHoat().getMaLop() + "-" + danhSachHoc.getLopMonHoc().getMonHoc().getMaMon();
+
+            JOptionPane.showMessageDialog(new JFrame(),"Xóa sinh viên khỏi lớp " + tenLop + " thành công");
 
         } catch (HibernateException ex) {
             JOptionPane.showMessageDialog(new JFrame(),"Có lỗi khi cập nhật bảng Danh sách học",

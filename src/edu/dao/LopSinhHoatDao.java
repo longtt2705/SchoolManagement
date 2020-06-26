@@ -18,7 +18,23 @@ import java.util.List;
  **/
 public class LopSinhHoatDao {
 
-    public static List layDanhSachLop() {
+    public static LopSinhHoat layLopSinhHoat(String maLop) {
+
+        LopSinhHoat lopSinhHoat = null;
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            lopSinhHoat = session.get(LopSinhHoat.class, maLop);
+
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(new JFrame(),"Có lỗi khi lấy thông tin Lớp sinh hoạt",
+                    "Unexpected error", JOptionPane.ERROR_MESSAGE);
+            System.err.println(ex);
+        }
+
+        return lopSinhHoat;
+    }
+
+    public static List<LopSinhHoat> layDanhSachLop() {
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
