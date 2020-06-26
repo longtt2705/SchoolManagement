@@ -2,6 +2,7 @@ package edu.main.GUI;
 
 import edu.dao.LopMonHocDao;
 import edu.dao.LopSinhHoatDao;
+import edu.main.MainProgram;
 import edu.pojo.LopSinhHoat;
 
 import javax.swing.*;
@@ -59,13 +60,14 @@ public class TeacherGUI {
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 
         // Set up the title for panels
-        container.setBorder(BorderFactory.createTitledBorder("Thành Long"));
+        container.setBorder(BorderFactory.createTitledBorder("Giáo vụ"));
         frame.setContentPane(container);
 
         // Components
         // Buttons
         JButton logoutButton = new JButton("Đăng xuất");
         logoutButton.addActionListener(al -> {
+            MainProgram.invokeGUI(MainProgram.ViewLevel.LOGIN);
             frame.dispose();
         });
         JButton changePassButton = new JButton("Đổi mật khẩu");

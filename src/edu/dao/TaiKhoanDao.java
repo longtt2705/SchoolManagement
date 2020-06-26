@@ -1,5 +1,6 @@
 package edu.dao;
 
+import edu.pojo.SinhVien;
 import edu.pojo.TaiKhoan;
 import edu.util.HibernateUtil;
 import org.hibernate.HibernateException;
@@ -46,6 +47,33 @@ public class TaiKhoanDao {
             query.setParameter("matkhau", taiKhoan.getTenDangNhap());
 
             List<TaiKhoan> list = query.list();
+            if (list.size() == 0)
+                return null;
+
+            return list.get(0);
+
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(new JFrame(),"Có lỗi khi lấy thông tin bảng Tài khoản",
+                    "Unexpected error", JOptionPane.ERROR_MESSAGE);
+            System.err.println(ex);
+        }
+
+        return null;
+    }
+
+    public static SinhVien laySinhVienTuongUng(TaiKhoan taiKhoan) {
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
+            if (!taiKhoan.getLoaiTaiKhoan()) {
+                throw new HibernateException("Lỗi loại tài khoản");
+            }
+
+            String hql = "select sv from TaiKhoan tk inner join tk.sinhVien sv where tk.tenDangNhap = :tendangnhap";
+            Query query = session.createQuery(hql);
+            query.setParameter("tendangnhap", taiKhoan.getTenDangNhap());
+
+            List<SinhVien> list = query.list();
             if (list.size() == 0)
                 return null;
 

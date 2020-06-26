@@ -170,4 +170,27 @@ public class DanhSachHocDao {
 
         return null;
     }
+
+    public static List<DanhSachHoc> layDanhSachHocDangThamGia(String mssv) {
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
+            String hql = "select dsh from DanhSachHoc dsh inner join dsh.sinhVien sv where sv.maSinhVien = :mssv";
+
+            Query query = session.createQuery(hql);
+            query.setParameter("mssv", mssv);
+            List<DanhSachHoc> danhSachHocList = query.list();
+
+            if (danhSachHocList.size() == 0)
+                return null;
+            return danhSachHocList;
+
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(new JFrame(),"Có lỗi khi lấy thông tin danh sách học",
+                    "Unexpected error", JOptionPane.ERROR_MESSAGE);
+            System.err.println(ex);
+        }
+
+        return null;
+    }
 }

@@ -1,6 +1,7 @@
 package edu.main;
 
 import edu.main.GUI.LoginFormGUI;
+import edu.main.GUI.StudentGUI;
 import edu.main.GUI.TeacherGUI;
 import edu.pojo.TaiKhoan;
 
@@ -32,7 +33,7 @@ public class MainProgram {
         switch (viewLevel) {
             case LOGIN -> javax.swing.SwingUtilities.invokeLater(LoginFormGUI::createAndShowGUI);
             case TEACHER -> javax.swing.SwingUtilities.invokeLater(TeacherGUI::createAndShowGUI);
-            case STUDENT -> javax.swing.SwingUtilities.invokeLater(TeacherGUI::createAndShowGUI);
+            case STUDENT -> javax.swing.SwingUtilities.invokeLater(StudentGUI::createAndShowGUI);
         }
 
     }
