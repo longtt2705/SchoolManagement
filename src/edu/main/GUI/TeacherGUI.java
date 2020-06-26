@@ -71,6 +71,7 @@ public class TeacherGUI {
             frame.dispose();
         });
         JButton changePassButton = new JButton("Đổi mật khẩu");
+        changePassButton.addActionListener(new ChangePasswordListener());
 
         // Navigate Bar
         JPanel navigatePanel = new JPanel();

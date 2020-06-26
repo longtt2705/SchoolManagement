@@ -45,6 +45,7 @@ public class StudentGUI {
             MainProgram.invokeGUI(MainProgram.ViewLevel.LOGIN);
             frame.dispose();
         });
+        changePassButton.addActionListener(new ChangePasswordListener());
 
         // Temp panel
         JPanel panel = new JPanel();

@@ -63,7 +63,7 @@ public class LoginFormGUI implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        TaiKhoan taiKhoan = TaiKhoanDao.layTaiKhoan(new TaiKhoan(userName.getText(), password.getSelectedText()));
+        TaiKhoan taiKhoan = TaiKhoanDao.layTaiKhoan(new TaiKhoan(userName.getText(), String.valueOf(password.getPassword())));
 
         if (taiKhoan != null) {
             if (!taiKhoan.getLoaiTaiKhoan())
