@@ -11,10 +11,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,7 +99,7 @@ public class AddScheduleListener implements ActionListener {
         List<String> list = new ArrayList<>();
 
         file = new File(path);
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8));
         String line;
 
         // Skip header
